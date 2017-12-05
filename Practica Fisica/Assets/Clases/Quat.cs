@@ -42,6 +42,16 @@ public class Quat{
         return new Quat(a.x * b, a.y * b, a.z * b, a.w * b);
     }
 
+    //cast
+    public static explicit operator Quaternion(Quat q)
+    {
+        return new Quaternion(q.x, q.y, q.z, q.w);
+    }
+    public static explicit operator Quat(Quaternion q)
+    {
+        return new Quat(q.x, q.y, q.z, q.w);
+    }
+
     public float magnitude() {
         return Mathf.Sqrt(Mathf.Pow(w, 2) + Mathf.Pow(x, 2) + Mathf.Pow(y, 2) + Mathf.Pow(z, 2));
     }
@@ -73,17 +83,19 @@ public class Quat{
         y = -y;
         z = -z;
     }
-    public Quaternion createRotation()
-    {
-        return new Quaternion(x, y, z, w);
 
-    }
     public Mat3 quatToMat()
     {
         Mat3 newMatrix = new Mat3 (new float[,] {   { 1 - 2*y*y - 2*z*z,    2*x*y - 2*z*w,      2*x*z + 2*y*w },
                                                     { 2*x*y + 2*z*w ,       1 - 2*x*x - 2*z*z,  2*y*z - 2*x*w },
                                                     { 2*x*z - 2*y*w,        2*y*z + 2*x*w,      1 - 2*x*x - 2*y*y } });
         return newMatrix;
+    }
+
+    public static Quat angleAxis(Vec3 v, float angle)
+    {
+        angle *= Mathf.Deg2Rad;
+        return new Quat(v, angle);
     }
 
 }
