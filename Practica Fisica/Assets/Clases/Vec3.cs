@@ -24,6 +24,7 @@ public class Vec3{
     {
             return new Vec3(v.x * a, v.y * a, v.z * a);
     }
+
     public static Vec3 operator *(float a, Vec3 v)
     {
         return new Vec3(v.x * a, v.y * a, v.z * a);
@@ -53,6 +54,16 @@ public class Vec3{
             return false;
         else
             return true;
+    }
+
+    //cast a vector3 y viceversa. 
+    public static explicit operator Vector3(Vec3 v)
+    {
+        return new Vector3(v.x, v.y, v.z);  
+    }
+    public static explicit operator Vec3(Vector3 v)
+    {
+        return new Vec3(v.x, v.y, v.z);
     }
 
     //operaciones
