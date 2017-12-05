@@ -86,8 +86,11 @@ public class Sphere : MonoBehaviour {
         this.transform.position = new Vector3(position.x, position.y, position.z);
 
         //The object is rotated here
-        Mat3 tempI;
-        //angularVelocity = tempI * angularMomentum * dt;
+        Mat3 tempI = rotation.quatToMat() * inverseInertiaTensor * rotation.conjugated().quatToMat();
+        angularVelocity = tempI * (angularMomentum * dt);
+        Quat tempW = new Quat( 0.5f * dt * angularVelocity, 0);
+        rotation = tempW * rotation;
+        rotation.normalize();
         
     }
 }
