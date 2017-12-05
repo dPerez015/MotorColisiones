@@ -1,16 +1,19 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class FisicalObject : MonoBehaviour {
+public class FisicalObject {
+    
+    public enum TypeOfObject{Sphere, Cube, Plane};
 
-	// Use this for initialization
-	void Start () {
+    public TypeOfObject type;
 
-    }
-	
-	// Update is called once per frame
-	void Update () {
-        //Vec3.AngleBetween(new Vec3(0, 0, 0), new Vec3(1, 0, 0));
-
-    }
+    Vec3 totalForce;
+    Vec3 acceleration;
+    Vec3 position;
+    Quat orientation;
+    Vec3 linearMomentum;
+    Vec3 angularMomentum
+    //funciones
+    
+    
 }
