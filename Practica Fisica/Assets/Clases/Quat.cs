@@ -16,14 +16,14 @@ public class Quat{
         axis = (axis.normalized() * Mathf.Sin(angle / 2)) ;
         x = axis.x;
         y = axis.y;
-        z = axis.x;
+        z = axis.z;
         w = Mathf.Cos(angle/2);
     }
     public Quat() {
         x = 0;
         y = 0;
         z = 0;
-        w = 0;
+        w = 1;
     }
 
 
@@ -39,6 +39,10 @@ public class Quat{
             );
     }
     public static Quat operator *(Quat a, float b) {
+        return new Quat(a.x * b, a.y * b, a.z * b, a.w * b);
+    }
+    public static Quat operator *(float b, Quat a)
+    {
         return new Quat(a.x * b, a.y * b, a.z * b, a.w * b);
     }
 

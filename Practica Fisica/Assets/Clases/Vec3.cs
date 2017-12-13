@@ -91,24 +91,28 @@ public class Vec3{
     }
 
     public Vec3 normalized() {
-        if (x != 0 && y != 0 && z != 0)
-            return new Vec3(this.x, this.y, this.z) / this.magnitude();
-        else
+        if (x == 0 && y == 0 && z == 0)
             throw new System.Exception("No se pude normalizar un vec3 nulo");
+        else
+            return new Vec3(this.x, this.y, this.z) / this.magnitude();
+
     }
     public void normalize() {
-        if (x != 0 && y != 0 && z != 0)
+        if (x == 0 && y == 0 && z == 0)
+        { 
+            throw new System.Exception("No se pude normalizar un vec3 nulo");
+        }
+        else
         {
             float size = this.magnitude();
             x /= size;
             y /= size;
             z /= size;
         }
-        else
-            throw new System.Exception("No se pude normalizar un vec3 nulo");
+          
     }
 
-    public static float distance(Vec3 a, Vec3 b) {
+    public static float Distance(Vec3 a, Vec3 b) {
         Vec3 v = b - a;
         return v.magnitude();
     }

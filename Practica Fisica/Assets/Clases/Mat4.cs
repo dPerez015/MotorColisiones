@@ -4,7 +4,15 @@ using System.Collections;
 public class Mat3
 {
     public float[,] matrix = new float[3, 3];
-
+    public Mat3()
+    {
+        matrix = new float[,]
+        {
+            {1f, 0f, 0f },
+            {0f, 1f, 0f },
+            {0f, 0f, 1f }
+        };
+    }
     public Mat3(float[,] values)
     {
         /*if(values.Length != 9)
@@ -26,8 +34,8 @@ public class Mat3
     public static Vec3 operator *(Mat3 matrix, Vec3 vector)
     {
         float[,] a = matrix.matrix;
-        Vec3 newVector = new Vec3(a[0, 0] * vector.x + a[0, 1] * vector.x + a[0, 2] * vector.z ,
-                                  a[1, 0] * vector.x + a[1, 1] * vector.y + a[1, 2] * vector.z ,
+        Vec3 newVector = new Vec3(a[0, 0] * vector.x + a[0, 1] * vector.y + a[0, 2] * vector.z,
+                                  a[1, 0] * vector.x + a[1, 1] * vector.y + a[1, 2] * vector.z,
                                   a[2, 0] * vector.x + a[2, 1] * vector.y + a[2, 2] * vector.z);
         return newVector;
     }
@@ -49,5 +57,14 @@ public class Mat3
     public static Mat3 operator *(float value, Mat3 matrix)
     {
         return matrix * value;
+    }
+    public Mat3 transposed()
+    {
+        Mat3 newMatrix = new Mat3(new float[,]
+        {   {matrix[0,0], matrix[1,0], matrix[2, 0] },
+            {matrix[0,1], matrix[1,1], matrix[2, 1] },
+            {matrix[0,2], matrix[1,2], matrix[2, 2] },
+        });
+        return newMatrix;
     }
 }

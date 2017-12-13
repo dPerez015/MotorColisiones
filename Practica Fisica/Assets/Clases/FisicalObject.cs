@@ -12,7 +12,7 @@ public class FisicalObject {
     Vec3 position;
     Quat orientation;
     Vec3 linearMomentum;
-    Vec3 angularMomentum
+    Vec3 angularMomentum;
     //funciones
     
     
