@@ -45,15 +45,24 @@ public class Vec3{
     public static bool operator ==(Vec3 a, Vec3 b) {
         if (a.x == b.x && a.y == b.y && a.z == b.z)
             return true;
-        else
-            return false;   
+        return false;  
+        //if (a.x == b.x)
+        //{
+        //    if (a.y == b.y)
+        //    {
+        //        if (a.z == b.z)
+        //            return true;
+        //    }
+        //}
+        //    return false;
     }
     public static bool operator !=(Vec3 a, Vec3 b)
     {
-        if (a.x == b.x && a.y == b.y && a.z == b.z)
+        /*if (a.x == b.x && a.y == b.y && a.z == b.z)
             return false;
         else
-            return true;
+            return true;*/
+        return !(a == b);
     }
 
     //cast a vector3 y viceversa. 
@@ -92,15 +101,19 @@ public class Vec3{
 
     public Vec3 normalized() {
         if (x == 0 && y == 0 && z == 0)
-            throw new System.Exception("No se pude normalizar un vec3 nulo");
+        {
+            //throw new System.Exception("No se pude normalizar un vec3 nulo");
+            return this;
+        }
         else
             return new Vec3(this.x, this.y, this.z) / this.magnitude();
 
     }
     public void normalize() {
         if (x == 0 && y == 0 && z == 0)
-        { 
-            throw new System.Exception("No se pude normalizar un vec3 nulo");
+        {
+            //throw new System.Exception("No se pude normalizar un vec3 nulo");
+            
         }
         else
         {

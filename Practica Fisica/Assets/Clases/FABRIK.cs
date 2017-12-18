@@ -20,8 +20,6 @@ public class FABRIK : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        Vector3 prueba = new Vector3(0, 0, 0);
-        prueba.Normalize();
         distances = new float[joints.Length - 1];
         copy = new Vec3[joints.Length];
     }
