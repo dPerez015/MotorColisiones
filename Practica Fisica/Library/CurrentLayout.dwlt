@@ -107,9 +107,9 @@ MonoBehaviour:
     width: 1920
     height: 947
   m_MinSize: {x: 679, y: 492}
-  m_MaxSize: {x: 18006, y: 14042}
+  m_MaxSize: {x: 18002, y: 14042}
   vertical: 0
-  controlID: 10
+  controlID: 50
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -131,9 +131,9 @@ MonoBehaviour:
     width: 1360
     height: 947
   m_MinSize: {x: 404, y: 492}
-  m_MaxSize: {x: 14006, y: 14042}
+  m_MaxSize: {x: 14002, y: 14042}
   vertical: 1
-  controlID: 11
+  controlID: 51
 --- !u!114 &7
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -157,7 +157,7 @@ MonoBehaviour:
   m_MinSize: {x: 404, y: 221}
   m_MaxSize: {x: 8004, y: 4021}
   vertical: 0
-  controlID: 12
+  controlID: 52
 --- !u!114 &8
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -229,10 +229,10 @@ MonoBehaviour:
     y: 650
     width: 1360
     height: 297
-  m_MinSize: {x: 336, y: 271}
-  m_MaxSize: {x: 14006, y: 10021}
+  m_MinSize: {x: 332, y: 271}
+  m_MaxSize: {x: 14002, y: 10021}
   vertical: 0
-  controlID: 122
+  controlID: 120
 --- !u!114 &11
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -276,8 +276,8 @@ MonoBehaviour:
     y: 0
     width: 313
     height: 297
-  m_MinSize: {x: 104, y: 121}
-  m_MaxSize: {x: 4004, y: 4021}
+  m_MinSize: {x: 100, y: 100}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 18}
   m_Panes:
   - {fileID: 18}
@@ -414,9 +414,9 @@ MonoBehaviour:
     height: 629
   m_TreeViewState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: ba260000
-    m_LastClickedID: 9914
-    m_ExpandedIDs: e0fbffffe2fbffffe4fbffff00000000
+    m_SelectedIDs: f8260000
+    m_LastClickedID: 9976
+    m_ExpandedIDs: e6fbffff00000000fc250000e0270000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -466,14 +466,14 @@ MonoBehaviour:
     width: 936
     height: 629
   m_SceneLighting: 1
-  lastFramingTime: 7081.481277754079
+  lastFramingTime: 26326.54098245886
   m_2DMode: 0
   m_isRotationLocked: 0
   m_AudioPlay: 1
   m_Position:
-    m_Target: {x: 7.4479065, y: 1.0463593, z: -5.5118923}
+    m_Target: {x: -27.794271, y: 11.201527, z: -14.744736}
     speed: 2
-    m_Value: {x: 7.4479065, y: 1.0463593, z: -5.5118923}
+    m_Value: {x: -27.794271, y: 11.201527, z: -14.744736}
   m_RenderMode: 0
   m_ValidateTrueMetals: 0
   m_SceneViewState:
@@ -496,13 +496,13 @@ MonoBehaviour:
       speed: 2
       m_Value: 0
   m_Rotation:
-    m_Target: {x: -0.037926745, y: 0.5478703, z: -0.024875715, w: -0.8353329}
+    m_Target: {x: -0.25992718, y: -0.61241645, z: 0.2234606, w: -0.71235484}
     speed: 2
-    m_Value: {x: -0.037926745, y: 0.5478703, z: -0.024875715, w: -0.8353329}
+    m_Value: {x: -0.25992718, y: -0.61241645, z: 0.2234606, w: -0.71235484}
   m_Size:
-    m_Target: 9.993694
+    m_Target: 4.3131523
     speed: 2
-    m_Value: 9.993694
+    m_Value: 4.3131523
   m_Ortho:
     m_Target: 0
     speed: 2
@@ -550,18 +550,18 @@ MonoBehaviour:
     m_ShowAllHits: 0
     m_SearchArea: 0
     m_Folders:
-    - Assets/Clases
+    - Assets/Clases/Materials
   m_ViewMode: 1
   m_StartGridSize: 39
   m_LastFolders:
-  - Assets/Clases
+  - Assets/Clases/Materials
   m_LastFoldersGridSize: 39
-  m_LastProjectPath: E:\enti\tercero\fisica2\proyecto\Practica Fisica
+  m_LastProjectPath: C:\Users\Usuario\Documents\GitHub\MotorColisiones\Practica Fisica
   m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 30250000
-    m_LastClickedID: 9520
+    m_SelectedIDs: 28250000
+    m_LastClickedID: 9512
     m_ExpandedIDs: 00000000d42400003025000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -617,7 +617,7 @@ MonoBehaviour:
   m_ListAreaState:
     m_SelectedInstanceIDs: 
     m_LastClickedInstanceID: 0
-    m_HadKeyboardFocusLastEvent: 0
+    m_HadKeyboardFocusLastEvent: 1
     m_ExpandedInstanceIDs: 4a260000aa5d000004050000d23d0000c21f0000ae210000022100009a21000048210000f4220000723302000c0500005238fdff5c2300001c2300001e0600002e0800003a0800003a2af0ffcc4d1300be0800009a070000fa05000062080000ac08000008080000742200008ad9ffff8e1e0000246f0000226f0000c8b800002a0500001c2800003c2700008227000094270000ba270000020a00009a0800001e230000d22100001e22000062220000aa22000094230000a8220000022200000e2200000c22000066240000642c0000602c00005c2c0000da230000d2290000fc2200009e5a000020240000702200009c2600000e260000322700007622000022230000c826000094220000b82200008c22000000000000
     m_RenameOverlay:
       m_UserAcceptedRename: 0

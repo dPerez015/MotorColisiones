@@ -61,23 +61,23 @@ public class Quat{
     }
 
     public Quat normalized() {
-        if (w != 0 && x != 0 && y != 0 && z != 0)
-            return this * (1 / this.magnitude());
-        else
+        if (w == 0 && x == 0 && y == 0 && z == 0)
             throw new System.Exception("no se pude normalizar un Quat nulo");
+        else
+        return this * (1 / this.magnitude());
     }
 
     public void normalize() {
-        if (w != 0 && x != 0 && y != 0 && z != 0)
+        if (w == 0 && x == 0 && y == 0 && z == 0)
+            throw new System.Exception("no se pude normalizar un Quat nulo");
+        else
         {
-            float mag = 1 / this.magnitude();
+            float mag = 1f / this.magnitude();
             w *= mag;
             x *= mag;
             y *= mag;
             z *= mag;
         }
-        else
-            throw new System.Exception("no se pude normalizar un Quat nulo");
     }
     public Quat conjugated() {
         return new Quat(-x, -y, -z, w);

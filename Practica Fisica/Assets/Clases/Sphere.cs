@@ -88,7 +88,8 @@ public class Sphere : MonoBehaviour
         if (Input.GetKeyDown("space"))
         {
             Debug.Log("Space Pressed");
-            AddForce(new Vec3(0f, 10f, 0f), new Vec3(1f, 1f, 1f));
+            AddForce(new Vec3(Random.Range(-10f, 10f), Random.Range(-10f, 10f), Random.Range(-10f, 10f)), new Vec3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), Random.Range(-1f, 1f)));
+            //AddForce(new Vec3(10f, 10f, 10f), new Vec3(1f, 0f, 0f));
         }
     }
     public void AddForce(Vec3 force, Vec3 applicationPoint)
@@ -106,7 +107,7 @@ public class Sphere : MonoBehaviour
         velocity = linearMomentum / mass;
         position += velocity * dt;
 
-        //this.transform.position = new Vector3(position.x, position.y, position.z);
+        this.transform.position = new Vector3(position.x, position.y, position.z);
 
         //The object is rotated here
         Mat3 rotationMatrix = rotation.quatToMat();
@@ -114,17 +115,10 @@ public class Sphere : MonoBehaviour
         angularVelocity = tempI * (angularMomentum * dt);
         if (angularVelocity.magnitude() != 0f)
         {
-            Quat tempW = new Quat(angularVelocity.x, angularVelocity.y, angularVelocity.z, 0f);
-
-            Quat temp2 = (0.5f * dt * tempW);
-
-            rotation = rotation + temp2 * rotation;
-
+            rotation = new Quat(angularVelocity, angularVelocity.magnitude()) * rotation;
             rotation.normalize();
             this.transform.rotation = (Quaternion)rotation;
-            //Debug.Log(rotation.x + ", " + rotation.y + ", " + rotation.z + ", " + rotation.w);
         }
-
     }
 }
 
