@@ -28,6 +28,7 @@ public class Sphere : MonoBehaviour
     private float radius;
     [SerializeField]
     private float mass;
+    private float inverseMass;
 
     //Inertia tensor
     private Mat3 inertiaTensor;
@@ -41,7 +42,7 @@ public class Sphere : MonoBehaviour
         inverseInertiaTensor = new Mat3(new float[,]{ { 1f / (2f/5f)*mass*radius*radius, 0, 0},
                                                 { 0, 1f / (2f/5f)*mass*radius*radius, 0},
                                                 { 0, 0, 1f / (2f/5f)*mass*radius*radius} });
-        position = new Vec3();
+        position = (Vec3)this.transform.position;
         velocity = new Vec3();
         linearMomentum = new Vec3(0f, 10f, 0f);
 
@@ -51,12 +52,20 @@ public class Sphere : MonoBehaviour
         angularVelocity = new Vec3();
         torque = new Vec3();
         rotation = (Quat)this.transform.rotation;
+        if(mass != 0)
+        {
+            inverseMass = 1 / mass;
+        } else
+        {
+            inverseMass = 0;
+        }
 
     }
     public Vec3 GetPosition() { return position; }
     public Vec3 GetVelocity() { return velocity; }
     public float GetRadius() { return radius; }
     public float GetMass() { return mass; }
+    public float GetInverseMass() { return inverseMass; }
     public void SetPosition(Vec3 pos) { position = pos; }
     public void SetRadius(float r)
     {
@@ -71,6 +80,11 @@ public class Sphere : MonoBehaviour
     public void SetMass(float m)
     {
         mass = m;
+        if (mass != 0)
+            inverseMass = 1 / mass;
+        else
+            inverseMass = 0;
+
         inertiaTensor = new Mat3(new float[,]{ { (2f/5f)*mass*radius*radius, 0, 0},
                                                 { 0, (2f/5f)*mass*radius*radius, 0},
                                                 { 0, 0, (2f/5f)*mass*radius*radius} });
