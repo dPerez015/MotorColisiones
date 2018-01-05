@@ -8,6 +8,7 @@ public class Sphere : PhysicalObject
     public override void Start()
     {
         Initialisation();
+        bodyType = BodyType.Type_Sphere;
         radius = this.transform.localScale.x;
         inertiaTensor = new Mat3(new float[,]{ { (2f/5f)*mass*radius*radius, 0, 0},
                                                 { 0, (2f/5f)*mass*radius*radius, 0},

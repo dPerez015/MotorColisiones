@@ -11,6 +11,7 @@ public class Box : PhysicalObject
     public override void Start()
     {
         Initialisation();
+        bodyType = BodyType.Type_Box;
         size = (Vec3)this.transform.localScale;
 
         inertiaTensor = new Mat3(new float[,]{ { (1f/12f)*mass*Mathf.Pow(size.y, 2)*Mathf.Pow(size.z, 2), 0, 0},

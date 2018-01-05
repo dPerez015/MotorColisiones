@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum BodyType {Type_Sphere, Type_Box, Type_Plane };
+
 public abstract class PhysicalObject : MonoBehaviour
 {
     //Movement variables
@@ -21,6 +23,8 @@ public abstract class PhysicalObject : MonoBehaviour
     public float mass;
     //Eis
     public float inverseMass;
+
+    public BodyType bodyType;
 
     //Inertia tensor
     public Mat3 inertiaTensor;

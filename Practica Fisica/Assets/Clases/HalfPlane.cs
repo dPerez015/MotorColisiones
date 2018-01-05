@@ -14,6 +14,7 @@ public class HalfPlane : PhysicalObject
 
     public override void Start()
     {
+        bodyType = BodyType.Type_Plane;
         normal = (Vec3)displayNormal.normalized;
         inverseMass = 0;
         mass = 0;
