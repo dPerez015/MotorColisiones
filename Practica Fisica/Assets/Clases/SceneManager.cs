@@ -113,4 +113,8 @@ public class SceneManager : MonoBehaviour {
     {
 
     }
+    void SolveCollision(CollisionData data)
+    {
+
+    }
 }

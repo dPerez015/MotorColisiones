@@ -101,5 +101,13 @@ public class Quat{
         angle *= Mathf.Deg2Rad;
         return new Quat(v, angle);
     }
-
+    public Vec3 GetAxis()
+    {
+        float sqrt = Mathf.Sqrt(1 - w * w);
+        return new Vec3(x / sqrt, y / sqrt, z / sqrt);
+    }
+    public float GetAngle()
+    {
+        return 2 * Mathf.Acos(w);
+    }
 }

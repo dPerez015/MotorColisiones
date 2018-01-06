@@ -47,7 +47,7 @@ public abstract class PhysicalObject : MonoBehaviour
             inverseMass = 0;
     }
 
-    public void CustomUpdate()
+    public virtual void CustomUpdate()
     {
         this.EulerStep(Time.deltaTime);
         if (Input.GetKeyDown("space"))
@@ -72,7 +72,7 @@ public abstract class PhysicalObject : MonoBehaviour
         velocity = linearMomentum / mass;
         position += velocity * dt;
 
-        this.transform.position = new Vector3(position.x, position.y, position.z);
+        //this.transform.position = new Vector3(position.x, position.y, position.z);
         //The object is rotated here
         Mat3 rotationMatrix = rotation.quatToMat();
         Mat3 tempI = rotationMatrix * inverseInertiaTensor * rotationMatrix.transposed();
