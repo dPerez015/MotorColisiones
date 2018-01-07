@@ -111,6 +111,49 @@ public class SceneManager : MonoBehaviour {
     }
     void CollisionBoxSphere(Box box, Sphere sphere)
     {
+        //convertimos la posicion de la esfera a coordenadas locales del cubo
+        Vec3 localSpherePos = box.getLocalCoordinates(sphere.position);
+        //Early exit: Si la esfera no esta overlapeada con el cubo en alguna de las coordenadas quiere decir que no estan colisionando
+        Vec3 boxHalfSize = box.GetHalfSize();
+        if (Mathf.Abs(localSpherePos.x)-sphere.GetRadius()>boxHalfSize.x ||
+            Mathf.Abs(localSpherePos.y) - sphere.GetRadius() > boxHalfSize.y ||
+            Mathf.Abs(localSpherePos.z) - sphere.GetRadius() > boxHalfSize.z)
+        {
+            return;
+        }
+
+        //ahora encontramos el punto mas cercano a la esfera en el cubo
+
+        Vec3 closestBoxPoint=new Vec3();
+
+        float dist = localSpherePos.x;
+        if (dist > boxHalfSize.x) dist = boxHalfSize.x;
+        else if (dist < -boxHalfSize.x) dist = -boxHalfSize.x;
+        closestBoxPoint.x = dist;
+
+        dist = localSpherePos.y;
+        if (dist > boxHalfSize.y) dist = boxHalfSize.y;
+        else if (dist < -boxHalfSize.y) dist = -boxHalfSize.y;
+        closestBoxPoint.y = dist;
+
+        dist = localSpherePos.z;
+        if (dist > boxHalfSize.z) dist = boxHalfSize.z;
+        else if (dist < -boxHalfSize.z) dist = -boxHalfSize.z;
+        closestBoxPoint.z = dist;
+
+        //ahora que sabemos cual es el punto mas proximo podemos comprobar si realmente se estan tocando
+        dist = (closestBoxPoint - localSpherePos).squareMagintude();
+        if (dist > sphere.GetRadius() * sphere.GetRadius()) return;
+
+        //collisionData
+        Quat closestBoxPointQuat = new Quat(closestBoxPoint.x, closestBoxPoint.y, closestBoxPoint.z, 0);
+        closestBoxPointQuat = box.rotation * closestBoxPointQuat * box.rotation.conjugated();
+
+        closestBoxPoint.x = closestBoxPointQuat.x;
+        closestBoxPoint.y = closestBoxPointQuat.y;
+        closestBoxPoint.z = closestBoxPointQuat.z;
+
+        CollisionData data = new CollisionData((sphere.position - closestBoxPoint).normalized(), closestBoxPoint, sphere.GetRadius() - Mathf.Sqrt(dist));
 
     }
     void SolveCollision(CollisionData data)

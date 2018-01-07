@@ -98,6 +98,10 @@ public class Vec3{
     public float magnitude() {
         return Mathf.Sqrt(Mathf.Pow(x, 2) + Mathf.Pow(y, 2) + Mathf.Pow(z, 2));
     }
+    public float squareMagintude()
+    {
+        return Mathf.Pow(x, 2) + Mathf.Pow(y, 2) + Mathf.Pow(z, 2);
+    }
 
     public Vec3 normalized() {
         if (x == 0 && y == 0 && z == 0)

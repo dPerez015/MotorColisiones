@@ -107,4 +107,16 @@ public abstract class PhysicalObject : MonoBehaviour
         }
     }
 
+    public Vec3 getLocalCoordinates(Vec3 original)
+    {
+        Vec3 ret = original - position;
+        Quat retQuat = new Quat(ret.x, ret.y, ret.z, 0);
+        retQuat = rotation.conjugated() * retQuat * rotation;
+
+        ret.x = retQuat.x;
+        ret.y = retQuat.y;
+        ret.z = retQuat.z;
+        return ret;
+    }
+
 }
