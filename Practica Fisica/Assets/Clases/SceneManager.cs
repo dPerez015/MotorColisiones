@@ -91,7 +91,10 @@ public class SceneManager : MonoBehaviour {
             return;
         CollisionData data = new CollisionData(plane.GetNormal(),
             sphere.GetPosition() - plane.GetNormal() * (distance + sphere.GetRadius()),
-            -distance);
+            -distance,
+            sphere,
+            plane
+            );
         collisions.Add(data);
     }
     void CollisionSphereSphere(Sphere sphere1, Sphere sphere2)
@@ -105,7 +108,10 @@ public class SceneManager : MonoBehaviour {
         }
         CollisionData data = new CollisionData(midPoint.normalized(),
             sphere2.GetPosition() + midPoint / 2f,
-            sphere1.GetRadius() + sphere2.GetRadius() - distance);
+            sphere1.GetRadius() + sphere2.GetRadius() - distance,
+            sphere1,
+            sphere2
+            );
         collisions.Add(data);
     }
     void CollisionBoxHalfPlane(Box box, HalfPlane plane)
@@ -119,7 +125,10 @@ public class SceneManager : MonoBehaviour {
             {
                 CollisionData data = new CollisionData(plane.GetNormal() * (vertexDistance - plane.GetOffset()) + vertex,
                     plane.GetNormal(),
-                    plane.GetOffset() - vertexDistance);
+                    plane.GetOffset() - vertexDistance,
+                    box,
+                    plane
+                    );
                 collisions.Add(data);
             }
         }
@@ -172,7 +181,13 @@ public class SceneManager : MonoBehaviour {
         closestBoxPoint.y = closestBoxPointQuat.y;
         closestBoxPoint.z = closestBoxPointQuat.z;
 
-        CollisionData data = new CollisionData((sphere.position - closestBoxPoint).normalized(), closestBoxPoint, sphere.GetRadius() - Mathf.Sqrt(dist));
+        CollisionData data = new CollisionData((sphere.position - closestBoxPoint).normalized(),
+            closestBoxPoint, 
+            sphere.GetRadius() - Mathf.Sqrt(dist),
+            box,
+            sphere);
+
+        collisions.Add(data);
 
     }
     void SolveCollision(CollisionData data)
