@@ -43,7 +43,7 @@ public class Sphere : PhysicalObject
     public override void Update()
     {
         //Update the object's position
-        CustomUpdate();
+       // CustomUpdate();
     }
 }
 

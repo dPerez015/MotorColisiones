@@ -85,7 +85,7 @@ public class Box : PhysicalObject
     public override void Update()
     {
         //Update the object's position
-        CustomUpdate();
+       // CustomUpdate();
     }
     public override void CustomUpdate()
     {

@@ -28,4 +28,8 @@ public class HalfPlane : PhysicalObject
     {
         
     }
+    public override void CustomUpdate()
+    {
+        
+    }
 }
