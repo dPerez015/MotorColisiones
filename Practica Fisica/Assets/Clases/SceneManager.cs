@@ -79,7 +79,7 @@ public class SceneManager : MonoBehaviour {
         //Solve the collisions
         for (int i = 0; i < collisions.Count; i++)
         {
-            //SolveCollision(collisions[i]);
+            SolveCollision(collisions[i]);
         }
         collisions.Clear();
 	}
@@ -192,23 +192,50 @@ public class SceneManager : MonoBehaviour {
     }
     void SolveCollision(CollisionData data)
     {
-        PhysicalObject A = new Sphere();
-        PhysicalObject B = new Sphere();
-        Vec3 pointA = A.GetVelocity() + Vec3.crossProduct(A.angularVelocity, data.GetContactPoint() - A.GetPosition());
-        Vec3 pointB = B.GetVelocity() + Vec3.crossProduct(B.angularVelocity, data.GetContactPoint() - B.GetPosition());
+        PhysicalObject A = data.objects[0];
+        PhysicalObject B = data.objects[1];
+        PhysicalObject nonPlane = null;
+        if (A.bodyType == BodyType.Type_Plane)
+        {
+            nonPlane = B;
+        }
+        else if (B.bodyType == BodyType.Type_Plane)
+        {
+            nonPlane = A;
+        }
+        if(nonPlane != null)
+        {
+            Vec3 point = nonPlane.GetVelocity() + Vec3.crossProduct(nonPlane.angularVelocity, data.GetContactPoint() - nonPlane.GetPosition());
+            float relV = Vec3.dotProduct(data.GetContactNormal(), point);
+            if (relV >= 0)
+                return;
 
-        float relV = Vec3.dotProduct(data.GetContactNormal(), (pointA - pointB));
-        //Early exit
-        if (relV >= 0)
-            return;
+            float firstPart = Vec3.dotProduct(data.GetContactNormal(), Vec3.crossProduct(nonPlane.inverseInertiaTensor * Vec3.crossProduct(data.GetContactPoint(), data.GetContactNormal()), data.GetContactPoint()));
+            float factor = A.GetInverseMass() + firstPart;
+            float j = -(1 + 1) * relV / factor;
 
-        float firstPart = Vec3.dotProduct(data.GetContactNormal(), Vec3.crossProduct(A.inverseInertiaTensor * Vec3.crossProduct(data.GetContactPoint(), data.GetContactNormal()), data.GetContactPoint()));
-        float secondPart = Vec3.dotProduct(data.GetContactNormal(), Vec3.crossProduct(B.inverseInertiaTensor * Vec3.crossProduct(data.GetContactPoint(), data.GetContactNormal()), data.GetContactPoint()));
-        float factor = A.GetInverseMass() + B.GetInverseMass() + firstPart + secondPart;
-        float j = -(1 + 1) * relV / factor;
+            Vec3 impulse = j * data.GetContactNormal();
+            nonPlane.AddForce(impulse, data.GetContactPoint() - nonPlane.GetPosition());
+        }
+        else
+        {
+            Vec3 pointA = A.GetVelocity() + Vec3.crossProduct(A.angularVelocity, data.GetContactPoint() - A.GetPosition());
+            Vec3 pointB = B.GetVelocity() + Vec3.crossProduct(B.angularVelocity, data.GetContactPoint() - B.GetPosition());
 
-        Vec3 impulse = j * data.GetContactNormal();
-        A.AddForce(impulse, data.GetContactPoint() - A.GetPosition());
-        B.AddForce(impulse, data.GetContactPoint() - B.GetPosition());
+            float relV = Vec3.dotProduct(data.GetContactNormal(), (pointA - pointB));
+            //Early exit
+            if (relV >= 0)
+                return;
+
+            float firstPart = Vec3.dotProduct(data.GetContactNormal(), Vec3.crossProduct(A.inverseInertiaTensor * Vec3.crossProduct(data.GetContactPoint(), data.GetContactNormal()), data.GetContactPoint()));
+            float secondPart = Vec3.dotProduct(data.GetContactNormal(), Vec3.crossProduct(B.inverseInertiaTensor * Vec3.crossProduct(data.GetContactPoint(), data.GetContactNormal()), data.GetContactPoint()));
+            float factor = A.GetInverseMass() + B.GetInverseMass() + firstPart + secondPart;
+            float j = -(1 + 1) * relV / factor;
+
+            Vec3 impulse = j * data.GetContactNormal();
+            Vec3 impulseB = new Vec3(-impulse.x, -impulse.y, -impulse.z);
+            A.AddForce(impulse, data.GetContactPoint() - A.GetPosition());
+            B.AddForce(impulseB, data.GetContactPoint() - B.GetPosition());
+        }
     }
 }
