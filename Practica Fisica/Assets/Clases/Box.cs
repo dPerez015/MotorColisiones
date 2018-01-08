@@ -1,18 +1,29 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Box : PhysicalObject
 {
+    struct contact
+    {
 
+        float penetration;
+
+        // public contact()
+    }
+    //enum TypeOfContact{,c }
 
     //Object variables
     private Vec3 size;
     private Vec3 halfSize;
     private Vec3[] vertices;
     private Vec3[] WorldVertices;
+    private List<float> contacts;
+
     public override void Start()
     {
         Initialisation();
+        //contacts=new List<>
         bodyType = BodyType.Type_Box;
         size = (Vec3)this.transform.localScale;
         halfSize = size / 2f;
@@ -85,16 +96,24 @@ public class Box : PhysicalObject
     public override void Update()
     {
         //Update the object's position
-       // CustomUpdate();
+        // CustomUpdate();
     }
     public override void CustomUpdate()
     {
         base.CustomUpdate();
         //Update the vertices
-        for (int i = 0; i < WorldVertices.Length; i++) {
+        for (int i = 0; i < WorldVertices.Length; i++)
+        {
             Quat vertexQuat = new Quat(vertices[i].x, vertices[i].y, vertices[i].z, 0);
             Quat newVertex = rotation * vertexQuat * rotation.conjugated();
             WorldVertices[i] = (Vec3)this.transform.position + new Vec3(newVertex.x, newVertex.y, newVertex.z);
-         }
+        }
+    }
+    public float transformToAxis(Vec3 axis)
+    {
+        return halfSize.x * Mathf.Abs(Vec3.dotProduct(axis, getAxisX())) +
+            halfSize.y * Mathf.Abs(Vec3.dotProduct(axis, getAxisY())) +
+            halfSize.z * Mathf.Abs(Vec3.dotProduct(axis, getAxisZ()));
+        return 0;
     }
 }

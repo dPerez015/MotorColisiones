@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum BodyType {Type_Sphere, Type_Box, Type_Plane };
+public enum BodyType { Type_Sphere, Type_Box, Type_Plane };
 
 public abstract class PhysicalObject : MonoBehaviour
 {
@@ -89,7 +89,7 @@ public abstract class PhysicalObject : MonoBehaviour
     {
         position = (Vec3)this.transform.position;
         velocity = new Vec3();
-        linearMomentum = new Vec3(0f, 0f, 0f);
+        linearMomentum = new Vec3(0f, 10f, 0f);
 
         gravity = new Vec3(0f, -9.81f, 0f);
 
@@ -118,5 +118,22 @@ public abstract class PhysicalObject : MonoBehaviour
         ret.z = retQuat.z;
         return ret;
     }
-
+    public Vec3 getAxisX()
+    {
+        Quat rotatedAxisQuat = new Quat(1, 0, 0, 0);
+        rotatedAxisQuat = rotation * rotatedAxisQuat * rotation.conjugated();
+        return new Vec3(rotatedAxisQuat.x, rotatedAxisQuat.y, rotatedAxisQuat.z);
+    }
+    public Vec3 getAxisY()
+    {
+        Quat rotatedAxisQuat = new Quat(0, 1, 0, 0);
+        rotatedAxisQuat = rotation * rotatedAxisQuat * rotation.conjugated();
+        return new Vec3(rotatedAxisQuat.x, rotatedAxisQuat.y, rotatedAxisQuat.z);
+    }
+    public Vec3 getAxisZ()
+    {
+        Quat rotatedAxisQuat = new Quat(0, 0, 1, 0);
+        rotatedAxisQuat = rotation * rotatedAxisQuat * rotation.conjugated();
+        return new Vec3(rotatedAxisQuat.x, rotatedAxisQuat.y, rotatedAxisQuat.z);
+    }
 }

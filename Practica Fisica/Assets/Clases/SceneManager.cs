@@ -135,6 +135,81 @@ public class SceneManager : MonoBehaviour {
     }
     void CollisionBoxBox(Box box1, Box box2)
     {
+        //earlyOutTest
+        Vec3[] axis = new Vec3[15];
+        axis[0] = box1.getAxisX();
+        axis[1] = box1.getAxisY();
+        axis[2] = box1.getAxisZ();
+
+        axis[3] = box2.getAxisX();
+        axis[4] = box2.getAxisY();
+        axis[5] = box2.getAxisZ();
+
+        axis[6] = Vec3.crossProduct(box1.getAxisX(), box2.getAxisX());
+        axis[7] = Vec3.crossProduct(box1.getAxisX(), box2.getAxisY());
+        axis[8] = Vec3.crossProduct(box1.getAxisX(), box2.getAxisZ());
+
+        axis[9] = Vec3.crossProduct(box1.getAxisY(), box2.getAxisX());
+        axis[10] = Vec3.crossProduct(box1.getAxisY(), box2.getAxisY());
+        axis[11] = Vec3.crossProduct(box1.getAxisY(), box2.getAxisZ());
+
+        axis[12] = Vec3.crossProduct(box1.getAxisZ(), box2.getAxisX());
+        axis[13] = Vec3.crossProduct(box1.getAxisZ(), box2.getAxisY());
+        axis[14] = Vec3.crossProduct(box1.getAxisZ(), box2.getAxisZ());
+
+        for (int i = 0; i < 15; i++)
+        {
+            if (!overlapOnAxis(box1, box2, axis[i])) return;
+        }
+
+        //point Face Contact
+
+        Vec3[] box1Vertices = box1.GetWorldVertices();
+        float depestPen = CollisionBoxPoint(box2, box1Vertices[0]);
+        float newPen;
+        for (int i = 1; i < box1Vertices.Length; i++)
+        {
+            //newPen=CollisionBoxPoint(box)
+        }
+
+
+    }
+
+    float CollisionBoxPoint(Box box, Vec3 point)
+    {
+        Vec3 relPos = box.getLocalCoordinates(point);
+        Vec3 normal;
+
+        float minDepth = box.GetHalfSize().x - Mathf.Abs(relPos.x);
+        if (minDepth < 0) return 0;//si el punto esta fuera salimos
+        normal = box.getAxisX() * ((relPos.x < 0) ? -1 : 1);
+
+        float depth = box.GetHalfSize().y - Mathf.Abs(relPos.y);
+        if (depth < 0) return 0;
+        else if (depth < minDepth)
+        {
+            minDepth = depth;
+            normal = box.getAxisY() * ((relPos.y < 0) ? -1 : 1);
+        }
+        depth = box.GetHalfSize().z - Mathf.Abs(relPos.z);
+        if (depth < 0) return 0;
+        else if (depth < minDepth)
+        {
+            minDepth = depth;
+            normal = box.getAxisZ() * ((relPos.z < 0) ? -1 : 1);
+        }
+        return minDepth;
+
+    }
+    bool overlapOnAxis(Box box1, Box box2, Vec3 axis)
+    {
+        float oneProject = box1.transformToAxis(axis);
+        float twoProject = box2.transformToAxis(axis);
+
+        Vec3 toCenter = box2.position - box1.position;
+
+        float distance = Mathf.Abs(Vec3.dotProduct(toCenter, axis));
+        return (distance < oneProject + twoProject);
 
     }
     void CollisionBoxSphere(Box box, Sphere sphere)
