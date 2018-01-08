@@ -68,7 +68,7 @@ public abstract class PhysicalObject : MonoBehaviour
     public void EulerStep(float dt)
     {
         //The object is moved here
-        linearMomentum += (gravity * mass * dt);
+        linearMomentum += gravity * mass * dt;
         velocity = linearMomentum / mass;
         position += velocity * dt;
 
