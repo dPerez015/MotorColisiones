@@ -63,6 +63,7 @@ public abstract class PhysicalObject : MonoBehaviour
         linearMomentum += force; // no dt because it's an impulse force
         torque = Vec3.crossProduct(force, applicationPoint);
         angularMomentum += torque;
+        Debug.Log(force.magnitude());
     }
 
     public void EulerStep(float dt)
@@ -89,7 +90,7 @@ public abstract class PhysicalObject : MonoBehaviour
     {
         position = (Vec3)this.transform.position;
         velocity = new Vec3();
-        linearMomentum = new Vec3(0f, 10f, 0f);
+        linearMomentum = new Vec3(0f, 0f, 0f);
 
         gravity = new Vec3(0f, -9.81f, 0f);
 

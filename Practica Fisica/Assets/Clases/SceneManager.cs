@@ -123,8 +123,8 @@ public class SceneManager : MonoBehaviour {
             float vertexDistance = Vec3.dotProduct(vertex, plane.GetNormal());
             if (vertexDistance <= plane.GetOffset())
             {
-                CollisionData data = new CollisionData(plane.GetNormal() * (vertexDistance - plane.GetOffset()) + vertex,
-                    plane.GetNormal(),
+                CollisionData data = new CollisionData(plane.GetNormal(),
+                    plane.GetNormal() * (vertexDistance - plane.GetOffset()) + vertex,
                     plane.GetOffset() - vertexDistance,
                     box,
                     plane
@@ -280,13 +280,12 @@ public class SceneManager : MonoBehaviour {
         }
         if(nonPlane != null)
         {
-            Vec3 point = nonPlane.GetVelocity() + Vec3.crossProduct(nonPlane.angularVelocity, data.GetContactPoint() - nonPlane.GetPosition());
-            float relV = Vec3.dotProduct(data.GetContactNormal(), point);
-            if (relV >= 0)
+            float relV = Vec3.dotProduct(data.GetContactNormal(), nonPlane.GetVelocity());
+            if (relV >= 0f)
                 return;
 
             float firstPart = Vec3.dotProduct(data.GetContactNormal(), Vec3.crossProduct(nonPlane.inverseInertiaTensor * Vec3.crossProduct(data.GetContactPoint(), data.GetContactNormal()), data.GetContactPoint()));
-            float factor = A.GetInverseMass() + firstPart;
+            float factor = nonPlane.GetInverseMass() + firstPart;
             float j = -(1 + 1) * relV / factor;
 
             Vec3 impulse = j * data.GetContactNormal();
