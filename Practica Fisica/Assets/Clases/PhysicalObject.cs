@@ -61,9 +61,8 @@ public abstract class PhysicalObject : MonoBehaviour
     {
         //The application point is expressed in the sphere local coordinates
         linearMomentum += force; // no dt because it's an impulse force
-        torque = Vec3.crossProduct(force, applicationPoint);
+        torque = Vec3.crossProduct(applicationPoint, force);
         angularMomentum += torque;
-        Debug.Log(force.magnitude());
     }
 
     public void EulerStep(float dt)

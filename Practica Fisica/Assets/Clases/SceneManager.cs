@@ -289,7 +289,12 @@ public class SceneManager : MonoBehaviour {
             float j = -(1 + 1) * relV / factor;
 
             Vec3 impulse = j * data.GetContactNormal();
-            nonPlane.AddForce(impulse, data.GetContactPoint() - nonPlane.GetPosition());
+            Debug.DrawLine((Vector3)nonPlane.GetPosition(), (Vector3)data.GetContactPoint());
+            nonPlane.SetPosition(nonPlane.GetPosition() + data.GetContactNormal() * data.GetPenetrationDepth());
+            if (relV > 0.1f)
+                nonPlane.AddForce(impulse, nonPlane.getLocalCoordinates(data.GetContactPoint()));
+
+
         }
         else
         {
@@ -298,7 +303,7 @@ public class SceneManager : MonoBehaviour {
 
             float relV = Vec3.dotProduct(data.GetContactNormal(), (pointA - pointB));
             //Early exit
-            if (relV >= 0)
+            if (relV > 0)
                 return;
 
             float firstPart = Vec3.dotProduct(data.GetContactNormal(), Vec3.crossProduct(A.inverseInertiaTensor * Vec3.crossProduct(data.GetContactPoint(), data.GetContactNormal()), data.GetContactPoint()));
