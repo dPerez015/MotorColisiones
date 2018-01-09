@@ -7,19 +7,33 @@ public class SceneManager : MonoBehaviour {
     [SerializeField]
     private List<PhysicalObject> objects;
     private List<CollisionData> collisions;
-
-    void Start()
+    private List<CollisionDataBox> boxCollisions;
+    public GameObject flecha;
+    void Awake()
     {
         objects = new List<PhysicalObject>();
         collisions = new List<CollisionData>();
+        boxCollisions = new List<CollisionDataBox>();
         PhysicalObject[] bodies = UnityEngine.Object.FindObjectsOfType<PhysicalObject>();
         for (int i = 0; i < bodies.Length; i++)
         {
+            bodies[i].flecha = flecha;
             objects.Add(bodies[i]);
         }
     }
 
         void Update () {
+        //hacer aparecer flechas
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            for (int i = 0; i < objects.Count; i++)
+            {
+                if(objects[i].bodyType!=BodyType.Type_Plane)
+                    objects[i].drawForces();
+            }
+                
+        }
+
         //Update the objects
 		for(int i = 0; i < objects.Count; i++)
         {
@@ -81,6 +95,24 @@ public class SceneManager : MonoBehaviour {
         {
             SolveCollision(collisions[i]);
         }
+        CollisionData data;
+        for (int i=0; i<boxCollisions.Count; i++)
+        {
+            data = new CollisionData(boxCollisions[i].contacts[0].normal, boxCollisions[i].contacts[0].contactPoint, boxCollisions[i].contacts[0].penetration, boxCollisions[i].box, boxCollisions[i].contacts[0].obj);
+            SolveCollision(data);
+            boxCollisions[i].box.updateVertices();
+            for (int j = 1; j < boxCollisions[i].contacts.Count; j++)
+            {
+                if(recalculateVertexPlane(boxCollisions[i].box,(HalfPlane)boxCollisions[i].contacts[j].obj, boxCollisions[i].contacts[j]))
+                {
+                    data = new CollisionData(boxCollisions[i].contacts[j].normal, boxCollisions[i].contacts[j].contactPoint, boxCollisions[i].contacts[j].penetration, boxCollisions[i].box, boxCollisions[i].contacts[j].obj);
+                    SolveCollision(data);
+                    boxCollisions[i].box.updateVertices();
+                }
+                SolveCollision(data);
+            }
+        }
+        boxCollisions.Clear();
         collisions.Clear();
 	}
 
@@ -117,21 +149,41 @@ public class SceneManager : MonoBehaviour {
     void CollisionBoxHalfPlane(Box box, HalfPlane plane)
     {
         Vec3[] boxVertices = box.GetWorldVertices();
+        CollisionDataBox data = new CollisionDataBox(box);
         for (int i = 0; i < boxVertices.Length; i++)
         {
             Vec3 vertex = boxVertices[i];
             float vertexDistance = Vec3.dotProduct(vertex, plane.GetNormal());
             if (vertexDistance <= plane.GetOffset())
             {
-                CollisionData data = new CollisionData(plane.GetNormal(),
-                    plane.GetNormal() * (vertexDistance - plane.GetOffset()) + vertex,
+                
+                data.contacts.Add(new CollisionDataBox.data(
+                    plane.GetNormal(),
+                    plane.GetNormal() * (vertexDistance - plane.GetOffset()) + vertex, 
+                    i,
                     plane.GetOffset() - vertexDistance,
-                    box,
-                    plane
-                    );
-                collisions.Add(data);
+                    plane)
+                );
+
             }
         }
+        if(data.contacts.Count>0)
+            boxCollisions.Add(data);
+
+    }
+
+    bool recalculateVertexPlane(Box box,HalfPlane plane, CollisionDataBox.data data)
+    {
+        Vec3 vertex = box.GetWorldVertices()[data.vertexIndex];
+        float vertexDistance = Vec3.dotProduct(vertex, plane.GetNormal());
+        if(vertexDistance <= plane.GetOffset())
+        {
+            data.normal = plane.GetNormal();
+            data.contactPoint = plane.GetNormal() * (vertexDistance - plane.GetOffset()) + vertex;
+            data.penetration=plane.GetOffset() - vertexDistance;
+            return true;
+        }
+        return false;
     }
     void CollisionBoxBox(Box box1, Box box2)
     {
@@ -181,18 +233,18 @@ public class SceneManager : MonoBehaviour {
         Vec3 normal;
 
         float minDepth = box.GetHalfSize().x - Mathf.Abs(relPos.x);
-        if (minDepth < 0) return 0;//si el punto esta fuera salimos
+        if (minDepth < 0) return -1;//si el punto esta fuera salimos
         normal = box.getAxisX() * ((relPos.x < 0) ? -1 : 1);
 
         float depth = box.GetHalfSize().y - Mathf.Abs(relPos.y);
-        if (depth < 0) return 0;
+        if (depth < 0) return -1;
         else if (depth < minDepth)
         {
             minDepth = depth;
             normal = box.getAxisY() * ((relPos.y < 0) ? -1 : 1);
         }
         depth = box.GetHalfSize().z - Mathf.Abs(relPos.z);
-        if (depth < 0) return 0;
+        if (depth < 0) return -1;
         else if (depth < minDepth)
         {
             minDepth = depth;
@@ -256,11 +308,12 @@ public class SceneManager : MonoBehaviour {
         closestBoxPoint.y = closestBoxPointQuat.y;
         closestBoxPoint.z = closestBoxPointQuat.z;
 
-        CollisionData data = new CollisionData((sphere.position - closestBoxPoint).normalized(),
-            closestBoxPoint, 
+        CollisionData data = new CollisionData((sphere.position - box.fromLocalToWorldCoordinates(closestBoxPoint)).normalized(),
+            box.fromLocalToWorldCoordinates(closestBoxPoint), 
             sphere.GetRadius() - Mathf.Sqrt(dist),
             box,
-            sphere);
+            sphere
+            );
 
         collisions.Add(data);
 
@@ -296,8 +349,7 @@ public class SceneManager : MonoBehaviour {
             Vec3 impulse = j * data.GetContactNormal();
             Debug.DrawLine((Vector3)nonPlane.GetPosition(), (Vector3)data.GetContactPoint());
             nonPlane.SetPosition(nonPlane.GetPosition() + data.GetContactNormal() * data.GetPenetrationDepth());
-            if (relV < 0.001f)
-                nonPlane.AddForce(impulse, nonPlane.getLocalCoordinates(data.GetContactPoint()));
+            nonPlane.AddForce(impulse, nonPlane.getLocalCoordinates(data.GetContactPoint()));
         }
         else
         {
@@ -305,6 +357,7 @@ public class SceneManager : MonoBehaviour {
             Vec3 pointB = B.GetVelocity() + Vec3.crossProduct(B.angularVelocity, data.GetContactPoint() - B.GetPosition());
 
             float relV = Vec3.dotProduct(data.GetContactNormal(), (pointA - pointB));
+
             //Early exit
             if (relV > 0)
                 return;
@@ -319,14 +372,26 @@ public class SceneManager : MonoBehaviour {
             float part2 = Vec3.dotProduct(Vec3.crossProduct(data.GetContactPoint(), data.GetContactNormal()), B.inverseInertiaTensor * Vec3.crossProduct(data.GetContactPoint(), data.GetContactNormal()));
             float bottomPart = A.GetInverseMass() + B.GetInverseMass() + part1 + part2;
             float j = -(1 + 1) * topPart / bottomPart;
-            
 
-            Vec3 impulse = j * data.GetContactNormal();
-            Vec3 impulseB = new Vec3(-impulse.x, -impulse.y, -impulse.z);
+            float totalMass = A.GetMass() + B.GetMass();
+            float porcentageA = A.GetMass() / totalMass;
+            float porcentageB = B.GetMass() / totalMass;
+
+            A.SetPosition(A.GetPosition() + data.GetContactNormal() * data.GetPenetrationDepth()*porcentageA);
+            B.SetPosition(B.GetPosition() + data.GetContactNormal() * data.GetPenetrationDepth() * porcentageB);
+
+            Vec3 impulse = j * data.GetContactNormal()*porcentageA;
+            Vec3 impulseB = new Vec3(impulse.x*-1, impulse.y * -1, impulse.z * -1)*porcentageB;
             A.AddForce(impulse * A.GetVelocity().magnitude(), A.getLocalCoordinates(data.GetContactPoint()));
             B.AddForce(impulseB * B.GetVelocity().magnitude(), B.getLocalCoordinates(data.GetContactPoint()));
         }
 
+
+    }
+
+    void SolveBoxCollision(CollisionDataBox data)
+    {
+       
 
     }
 }

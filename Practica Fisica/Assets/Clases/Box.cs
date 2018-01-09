@@ -109,11 +109,21 @@ public class Box : PhysicalObject
             WorldVertices[i] = (Vec3)this.transform.position + new Vec3(newVertex.x, newVertex.y, newVertex.z);
         }
     }
+    public void updateVertices()
+    {
+        for (int i = 0; i < WorldVertices.Length; i++)
+        {
+            Quat vertexQuat = new Quat(vertices[i].x, vertices[i].y, vertices[i].z, 0);
+            Quat newVertex = rotation * vertexQuat * rotation.conjugated();
+            WorldVertices[i] = (Vec3)this.transform.position + new Vec3(newVertex.x, newVertex.y, newVertex.z);
+        }
+
+    }
     public float transformToAxis(Vec3 axis)
     {
         return halfSize.x * Mathf.Abs(Vec3.dotProduct(axis, getAxisX())) +
             halfSize.y * Mathf.Abs(Vec3.dotProduct(axis, getAxisY())) +
             halfSize.z * Mathf.Abs(Vec3.dotProduct(axis, getAxisZ()));
-        return 0;
+        
     }
 }

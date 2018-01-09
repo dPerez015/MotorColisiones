@@ -30,6 +30,10 @@ public abstract class PhysicalObject : MonoBehaviour
     public Mat3 inertiaTensor;
     public Mat3 inverseInertiaTensor;
 
+    //flechas
+    GameObject[] flechas;
+    public GameObject flecha;
+    bool isShowingFlechas;
     //Methods
     public abstract void Start();
 
@@ -50,11 +54,17 @@ public abstract class PhysicalObject : MonoBehaviour
     public virtual void CustomUpdate()
     {
         EulerStep(Time.deltaTime);
-        if (Input.GetKeyDown("space"))
+        if (isShowingFlechas)
+        {
+            flechas[0].GetComponent<Flecha>().customUpdate(position, velocity);
+            flechas[1].GetComponent<Flecha>().customUpdate(position, gravity);
+           // flechas[2].GetComponent<Flecha>().customUpdate(position, linearMomentum);
+        }
+       /* if (Input.GetKeyDown("space"))
         {
             Debug.Log("Space Pressed");
             AddForce(new Vec3(Random.Range(-10f, 10f), Random.Range(-10f, 10f), Random.Range(-10f, 10f)), new Vec3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), Random.Range(-1f, 1f)));
-        }
+        }*/
     }
 
     public void AddForce(Vec3 force, Vec3 applicationPoint)
@@ -105,6 +115,16 @@ public abstract class PhysicalObject : MonoBehaviour
         {
             inverseMass = 0;
         }
+
+        //flechas
+        flechas = new GameObject[3];
+        for(int i = 0; i < 3; i++)
+        {
+            flechas[i]= Instantiate(flecha);
+            flechas[i].SetActive(false);
+        }
+        isShowingFlechas = false;
+
     }
 
     public Vec3 getLocalCoordinates(Vec3 original)
@@ -117,6 +137,19 @@ public abstract class PhysicalObject : MonoBehaviour
         ret.y = retQuat.y;
         ret.z = retQuat.z;
         return ret;
+    }
+    public Vec3 fromLocalToWorldCoordinates(Vec3 original)
+    {
+        Quat originalQuat = new Quat(original.x, original.y, original.z,0);
+        originalQuat = rotation * originalQuat * rotation.conjugated();
+
+        Vec3 ret = new Vec3();
+        ret.x = originalQuat.x;
+        ret.y = originalQuat.y;
+        ret.z = originalQuat.z;
+
+        return ret + position;
+
     }
     public Vec3 getAxisX()
     {
@@ -135,5 +168,18 @@ public abstract class PhysicalObject : MonoBehaviour
         Quat rotatedAxisQuat = new Quat(0, 0, 1, 0);
         rotatedAxisQuat = rotation * rotatedAxisQuat * rotation.conjugated();
         return new Vec3(rotatedAxisQuat.x, rotatedAxisQuat.y, rotatedAxisQuat.z);
+    }
+
+    public void drawForces()
+    {
+        flechas[0].SetActive(true);
+        flechas[0].GetComponent<Flecha>().init(position, position + velocity, Color.green,this);
+
+        flechas[1].SetActive(true);
+        flechas[1].GetComponent<Flecha>().init(position, position + gravity, Color.red,this);
+
+        isShowingFlechas = true;
+        /*flechas[2].SetActive(true);
+        flechas[2].GetComponent<Flecha>().init(position, position + velocity, Color.yellow,this);*/
     }
 }
