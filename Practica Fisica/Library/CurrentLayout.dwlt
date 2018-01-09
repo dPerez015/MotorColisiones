@@ -20,7 +20,7 @@ MonoBehaviour:
   m_ShowMode: 4
   m_Title: 
   m_RootView: {fileID: 2}
-  m_MinSize: {x: 950, y: 542}
+  m_MinSize: {x: 950, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
 --- !u!114 &2
 MonoBehaviour:
@@ -43,7 +43,7 @@ MonoBehaviour:
     y: 0
     width: 1904
     height: 981
-  m_MinSize: {x: 950, y: 542}
+  m_MinSize: {x: 950, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
 --- !u!114 &3
 MonoBehaviour:
@@ -416,7 +416,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: e4fbffff00000000
+    m_ExpandedIDs: ceadfbff72aefbff4eaffbffe4fbffff00000000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -471,9 +471,9 @@ MonoBehaviour:
   m_isRotationLocked: 0
   m_AudioPlay: 1
   m_Position:
-    m_Target: {x: -1.8476412, y: 1.5726893, z: -8.645006}
+    m_Target: {x: -5.446422, y: 8.392868, z: -5.438749}
     speed: 2
-    m_Value: {x: -1.8476412, y: 1.5726893, z: -8.645006}
+    m_Value: {x: -5.446422, y: 8.392868, z: -5.438749}
   m_RenderMode: 0
   m_ValidateTrueMetals: 0
   m_SceneViewState:
@@ -496,9 +496,9 @@ MonoBehaviour:
       speed: 2
       m_Value: 0
   m_Rotation:
-    m_Target: {x: 0.041777063, y: -0.10141629, z: 0.004261952, w: 0.9939574}
+    m_Target: {x: -0.44309333, y: -0.068749905, z: 0.034106202, w: -0.8931844}
     speed: 2
-    m_Value: {x: -0.041777067, y: 0.10141629, z: -0.004261952, w: -0.99395746}
+    m_Value: {x: -0.44309336, y: -0.06874991, z: 0.034106206, w: -0.8931845}
   m_Size:
     m_Target: 1.4289418
     speed: 2
@@ -550,18 +550,18 @@ MonoBehaviour:
     m_ShowAllHits: 0
     m_SearchArea: 0
     m_Folders:
-    - Assets/Materials
+    - Assets/Clases
   m_ViewMode: 1
   m_StartGridSize: 39
   m_LastFolders:
-  - Assets/Materials
+  - Assets/Clases
   m_LastFoldersGridSize: 39
   m_LastProjectPath: E:\enti\tercero\fisica2\proyecto\Practica Fisica
   m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 5c250000
-    m_LastClickedID: 9564
+    m_SelectedIDs: 3e250000
+    m_LastClickedID: 9534
     m_ExpandedIDs: 00000000ca2400003e25000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -617,7 +617,7 @@ MonoBehaviour:
   m_ListAreaState:
     m_SelectedInstanceIDs: 
     m_LastClickedInstanceID: 0
-    m_HadKeyboardFocusLastEvent: 0
+    m_HadKeyboardFocusLastEvent: 1
     m_ExpandedInstanceIDs: 4a260000aa5d000004050000d23d0000c21f0000ae210000022100009a21000048210000f4220000723302000c0500005238fdff5c2300001c2300001e0600002e0800003a0800003a2af0ffcc4d1300be0800009a070000fa05000062080000ac08000008080000742200008ad9ffff8e1e0000246f0000226f0000c8b800002a0500001c2800003c2700008227000094270000ba270000020a00009a0800001e230000d22100001e22000062220000aa22000094230000a8220000022200000e2200000c22000066240000642c0000602c00005c2c0000da230000d2290000fc2200009e5a000020240000702200009c2600000e260000322700007622000022230000c826000094220000b82200008c22000000000000
     m_RenameOverlay:
       m_UserAcceptedRename: 0

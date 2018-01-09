@@ -10,9 +10,10 @@ public abstract class PhysicalObject : MonoBehaviour
     public Vec3 position;
     public Vec3 velocity;
     public Vec3 linearMomentum;
-
+    private Vec3 originalPosition;
     //Rotation Variables
     public Quat rotation;
+    private Quat originalRotation;
     public Vec3 torque;
     public Vec3 angularMomentum;
     public Vec3 angularVelocity;
@@ -75,6 +76,35 @@ public abstract class PhysicalObject : MonoBehaviour
         angularMomentum += torque;
     }
 
+    public virtual void Reset(){
+        position = originalPosition;
+        velocity = new Vec3();
+        linearMomentum = new Vec3(0f, 0f, 0f);
+
+        gravity = new Vec3(0f, -9.81f, 0f);
+
+        angularMomentum = new Vec3(0f, 0f, 0f);
+        angularVelocity = new Vec3();
+        torque = new Vec3();
+        rotation = originalRotation;
+        transform.rotation = (Quaternion)originalRotation;
+        if (mass != 0)
+        {
+            inverseMass = 1 / mass;
+        }
+        else
+        {
+            inverseMass = 0;
+        }
+
+        //flechas
+        for (int i = 0; i < 3; i++)
+        {
+            flechas[i].SetActive(false);
+        }
+        isShowingFlechas = false;
+    }
+
     public void EulerStep(float dt)
     {
         //The object is moved here
@@ -98,6 +128,7 @@ public abstract class PhysicalObject : MonoBehaviour
     public void Initialisation()
     {
         position = (Vec3)this.transform.position;
+        originalPosition = position;
         velocity = new Vec3();
         linearMomentum = new Vec3(0f, 0f, 0f);
 
@@ -107,6 +138,7 @@ public abstract class PhysicalObject : MonoBehaviour
         angularVelocity = new Vec3();
         torque = new Vec3();
         rotation = (Quat)this.transform.rotation;
+        originalRotation = rotation;
         if (mass != 0)
         {
             inverseMass = 1 / mass;

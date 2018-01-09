@@ -34,6 +34,15 @@ public class SceneManager : MonoBehaviour {
                 
         }
 
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            for (int i = 0; i < objects.Count; i++)
+            {
+                if (objects[i].bodyType != BodyType.Type_Plane)
+                    objects[i].Reset();
+            }
+        }
+
         //Update the objects
 		for(int i = 0; i < objects.Count; i++)
         {
@@ -311,8 +320,8 @@ public class SceneManager : MonoBehaviour {
         CollisionData data = new CollisionData((sphere.position - box.fromLocalToWorldCoordinates(closestBoxPoint)).normalized(),
             box.fromLocalToWorldCoordinates(closestBoxPoint), 
             sphere.GetRadius() - Mathf.Sqrt(dist),
-            box,
-            sphere
+            sphere,
+            box
             );
 
         collisions.Add(data);
@@ -377,11 +386,11 @@ public class SceneManager : MonoBehaviour {
             float porcentageA = A.GetMass() / totalMass;
             float porcentageB = B.GetMass() / totalMass;
 
-            A.SetPosition(A.GetPosition() + data.GetContactNormal() * data.GetPenetrationDepth()*porcentageA);
-            B.SetPosition(B.GetPosition() + data.GetContactNormal() * data.GetPenetrationDepth() * porcentageB);
+           // A.SetPosition(A.GetPosition() + data.GetContactNormal() * data.GetPenetrationDepth()*porcentageA);
+            //B.SetPosition(B.GetPosition() + data.GetContactNormal() * data.GetPenetrationDepth() * porcentageB);
 
-            Vec3 impulse = j * data.GetContactNormal()*porcentageA;
-            Vec3 impulseB = new Vec3(impulse.x*-1, impulse.y * -1, impulse.z * -1)*porcentageB;
+            Vec3 impulse = j * data.GetContactNormal();
+            Vec3 impulseB = new Vec3(impulse.x*-1, impulse.y * -1, impulse.z * -1);
             A.AddForce(impulse * A.GetVelocity().magnitude(), A.getLocalCoordinates(data.GetContactPoint()));
             B.AddForce(impulseB * B.GetVelocity().magnitude(), B.getLocalCoordinates(data.GetContactPoint()));
         }

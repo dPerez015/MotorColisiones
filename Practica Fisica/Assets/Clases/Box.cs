@@ -58,6 +58,11 @@ public class Box : PhysicalObject
                                                 { 0, 0, 1f / (1f/12f)*mass*Mathf.Pow(size.x, 2)*Mathf.Pow(size.y, 2)} });
 
     }
+    public override void Reset()
+    {
+        base.Reset();
+        updateVertices();
+    }
     public Vec3 GetSize() { return size; }
     public Vec3 GetHalfSize() { return halfSize; }
     public Vec3[] GetWorldVertices() { return WorldVertices; }
