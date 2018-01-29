@@ -22,6 +22,15 @@ public class Mat3
         }*/
         matrix = values;
     }
+    public Mat3(Vec3 v1, Vec3 v2, Vec3 v3)
+    {
+        matrix = new float[,]
+        {
+            {v1.x,v2.x,v3.x},
+            {v1.y,v2.y,v3.y},
+            {v1.z,v2.z,v3.z}
+        };
+    }
     public static Mat3 operator *(Mat3 matrixA, Mat3 matrixB)
     {
         float[,] a = matrixA.matrix;
@@ -58,6 +67,7 @@ public class Mat3
     {
         return matrix * value;
     }
+
     public Mat3 transposed()
     {
         Mat3 newMatrix = new Mat3(new float[,]
@@ -66,5 +76,30 @@ public class Mat3
             {matrix[0,2], matrix[1,2], matrix[2, 2] },
         });
         return newMatrix;
+    }
+
+    public Vec3 transform(Vec3 v)
+    {
+        return this * v;
+    }
+
+    public Vec3 transformTranspose(Vec3 v)
+    {
+        return this.transposed() * v;
+    }
+
+    public void setComponents(Vec3 v1, Vec3 v2, Vec3 v3)
+    {
+        matrix[0, 0] = v1.x;
+        matrix[0, 1] = v1.y;
+        matrix[0, 2] = v1.z;
+
+        matrix[1, 0] = v2.x;
+        matrix[1, 1] = v2.y;
+        matrix[1, 2] = v2.z;
+
+        matrix[2, 0] = v3.x;
+        matrix[2, 1] = v3.y;
+        matrix[2, 2] = v3.z;
     }
 }

@@ -152,7 +152,7 @@ public abstract class PhysicalObject : MonoBehaviour
         flechas = new GameObject[3];
         for(int i = 0; i < 3; i++)
         {
-            flechas[i]= Instantiate(flecha);
+            flechas[i]= Instantiate(flecha,transform);
             flechas[i].SetActive(false);
         }
         isShowingFlechas = false;

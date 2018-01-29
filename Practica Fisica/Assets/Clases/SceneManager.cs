@@ -9,6 +9,7 @@ public class SceneManager : MonoBehaviour {
     private List<CollisionData> collisions;
     private List<CollisionDataBox> boxCollisions;
     public GameObject flecha;
+
     void Awake()
     {
         objects = new List<PhysicalObject>();
@@ -21,7 +22,11 @@ public class SceneManager : MonoBehaviour {
             objects.Add(bodies[i]);
         }
     }
+    public void addObject(PhysicalObject obj)
+    {
+           objects.Add(obj);
 
+    }
         void Update () {
         //hacer aparecer flechas
         if (Input.GetKeyDown(KeyCode.Space))
@@ -130,7 +135,8 @@ public class SceneManager : MonoBehaviour {
         float distance = Vec3.dotProduct(plane.GetNormal(), sphere.GetPosition()) - sphere.GetRadius() - plane.GetOffset();
         if (distance >= 0)
             return;
-        CollisionData data = new CollisionData(plane.GetNormal(),
+        CollisionData data = new CollisionData(
+            plane.GetNormal(),
             sphere.GetPosition() - plane.GetNormal() * (distance + sphere.GetRadius()),
             -distance,
             sphere,
@@ -155,6 +161,7 @@ public class SceneManager : MonoBehaviour {
             );
         collisions.Add(data);
     }
+
     void CollisionBoxHalfPlane(Box box, HalfPlane plane)
     {
         Vec3[] boxVertices = box.GetWorldVertices();
@@ -180,7 +187,6 @@ public class SceneManager : MonoBehaviour {
             boxCollisions.Add(data);
 
     }
-
     bool recalculateVertexPlane(Box box,HalfPlane plane, CollisionDataBox.data data)
     {
         Vec3 vertex = box.GetWorldVertices()[data.vertexIndex];
